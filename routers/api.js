@@ -7,7 +7,7 @@ const router = e.Router();
 router.post("/register", AuthController.register);
 router.post("/login", AuthController.login);
 
-// refresh token
+// refresh toke
 router.post("/refresh-token", jwtAuth(), AuthController.refreshToken);
 
 export default router;
