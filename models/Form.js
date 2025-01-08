@@ -20,7 +20,6 @@ const FormSchema = new mongoose.Schema(
     },
     public: {
       type: Boolean,
-      default: false,
     },
     createdAt: {
       type: Number,
