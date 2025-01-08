@@ -2,6 +2,28 @@ import mongoose from "mongoose";
 import Form from "../models/Form.js";
 
 class FormController {
+  async index(req, res) {
+    try {
+      const form = await Form.find({
+        userId: req.jwt.id,
+      });
+      if (!form) {
+        throw { code: 404, message: "Forms not found" };
+      }
+
+      return res.status(200).json({
+        status: true,
+        message: "Form retrieved successfully",
+        totalData: form.length,
+        data: { form },
+      });
+    } catch (error) {
+      return res.status(error.code || 500).json({
+        status: false,
+        message: error.message,
+      });
+    }
+  }
   async store(req, res) {
     try {
       const form = await Form.create({
@@ -48,6 +70,68 @@ class FormController {
         status: true,
         message: "Form retrieved successfully",
         data: { form },
+      });
+    } catch (error) {
+      return res.status(error.code || 500).json({
+        status: false,
+        message: error.message,
+      });
+    }
+  }
+
+  async update(req, res) {
+    try {
+      if (!req.params.id) {
+        throw { code: 400, message: "Form ID required" };
+      }
+      if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+        throw { code: 400, message: "Invalid form ID" };
+      }
+
+      const form = await Form.findOneAndUpdate(
+        { _id: req.params.id, userId: req.jwt.id },
+        req.body,
+        { new: true }
+      );
+      if (!form) {
+        throw { code: 404, message: "Form not found" };
+      }
+
+      return res.status(200).json({
+        status: true,
+        message: "Form updated successfully",
+        data: { form },
+      });
+    } catch (error) {
+      return res.status(error.code || 500).json({
+        status: false,
+        message: error.message,
+      });
+    }
+  }
+
+  async destroy(req, res) {
+    try {
+      if (!req.params.id) {
+        throw { code: 400, message: "Form ID required" };
+      }
+      if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+        throw { code: 400, message: "Invalid form ID" };
+      }
+
+      const form = await Form.findOneAndDelete({
+        _id: req.params.id,
+        userId: req.jwt.id,
+      });
+
+      if (!form) {
+        throw { code: 404, message: "Form not found" };
+      }
+
+      return res.status(200).json({
+        status: true,
+        message: "Form deleted successfully",
+        data: form,
       });
     } catch (error) {
       return res.status(error.code || 500).json({
