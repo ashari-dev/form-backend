@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import mongoosePaginate from "mongoose-paginate-v2";
 
 const FormSchema = new mongoose.Schema(
   {
@@ -34,5 +35,7 @@ const FormSchema = new mongoose.Schema(
     },
   }
 );
+
+FormSchema.plugin(mongoosePaginate);
 
 export default mongoose.model("Form", FormSchema);
