@@ -13,4 +13,6 @@ router.post("/refresh-token", jwtAuth(), AuthController.refreshToken);
 
 // form
 router.post("/forms", jwtAuth(), FormController.store);
+router.get("/forms/:id", jwtAuth(), FormController.show);
+
 export default router;
