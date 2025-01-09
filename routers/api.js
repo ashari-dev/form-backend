@@ -3,6 +3,7 @@ import jwtAuth from "../middlewares/jwtAuth.js";
 import AuthController from "../controllers/AuthControllers.js";
 import FormController from "../controllers/FormControllers.js";
 import QuestionsController from "../controllers/QuestionsControllers.js";
+import OptionControllers from "../controllers/OptionControllers.js";
 
 const router = e.Router();
 //auth
@@ -18,6 +19,7 @@ router.post("/forms", jwtAuth(), FormController.store);
 router.get("/forms/:id", jwtAuth(), FormController.show);
 router.put("/forms/:id", jwtAuth(), FormController.update);
 router.delete("/forms/:id", jwtAuth(), FormController.destroy);
+router.get("/forms/:id/user", jwtAuth(), FormController.showToUser);
 
 // question
 router.get("/forms/:id/question", jwtAuth(), QuestionsController.index);
@@ -31,6 +33,23 @@ router.delete(
   "/forms/:id/question/:questionId",
   jwtAuth(),
   QuestionsController.destroy
+);
+
+// option
+router.post(
+  "/forms/:id/question/:questionId/option",
+  jwtAuth(),
+  OptionControllers.store
+);
+router.put(
+  "/forms/:id/question/:questionId/option/:optionId",
+  jwtAuth(),
+  OptionControllers.update
+);
+router.delete(
+  "/forms/:id/question/:questionId/option/:optionId",
+  jwtAuth(),
+  OptionControllers.destroy
 );
 
 export default router;

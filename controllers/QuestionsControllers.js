@@ -47,7 +47,7 @@ class QuestionsController {
         question: null,
         type: "text",
         required: false,
-        options: req.body.options,
+        options: [],
       };
 
       const form = await Form.findOneAndUpdate(
